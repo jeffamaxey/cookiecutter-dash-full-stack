@@ -64,9 +64,7 @@ class CRUDUser:
 
     @classmethod
     def authenticate(cls, db, *, email: str, password: str):
-        user = cls.get_by_email(db, email=email)
-        if not user:
+        if user := cls.get_by_email(db, email=email):
+            return None if not verify_password(password, user.hashed_password) else user
+        else:
             return None
-        if not verify_password(password, user.hashed_password):
-            return None
-        return user

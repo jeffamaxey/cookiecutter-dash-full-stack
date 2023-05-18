@@ -35,7 +35,7 @@ def route(pathname):
         elif pathname == "/users/create":
             return views.users_create.layout(sidebar_context)
         elif re.match(r"^/users/\d+", pathname):
-            user_id = re.match(r"^/users/(\d+)", pathname).group(1)
+            user_id = re.match(r"^/users/(\d+)", pathname)[1]
             db = SessionLocal()
             try:
                 user = CRUDUser.get(db, id=user_id)

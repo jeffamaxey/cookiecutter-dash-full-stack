@@ -12,9 +12,7 @@ class UserBase(BaseModel):
 
     @validator("full_name", pre=True)
     def passwords_match(cls, v, values, **kwargs):
-        if v == "":
-            return None
-        return v
+        return None if v == "" else v
 
 
 # Properties to receive via API on creation
@@ -37,15 +35,11 @@ class UserUpdate(UserBase):
 
     @validator("password", pre=True)
     def password_pre(cls, v, values, **kwargs):
-        if v == "":
-            return None
-        return v
+        return None if v == "" else v
 
     @validator("password2", pre=True)
     def password2_pre(cls, v, values, **kwargs):
-        if v == "":
-            return None
-        return v
+        return None if v == "" else v
 
     @validator("password2")
     def passwords2_match(cls, v, values, **kwargs):

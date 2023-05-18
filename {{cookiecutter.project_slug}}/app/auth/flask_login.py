@@ -15,21 +15,20 @@ class FlaskLogin(Auth):
             error = False
             if self.is_authorized():
                 return redirect("/")
-            else:
-                if request.method == "POST":
-                    db = SessionLocal()
-                    email = request.form.get("email")
-                    password = request.form.get("password")
-                    rememberMe = request.form.get("rememberMe") is not None
-                    try:
-                        user = CRUDUser.authenticate(db, email=email, password=password)
-                        if user:
-                            login_user(user, remember=rememberMe)
-                            return redirect("/")
-                    finally:
-                        db.close()
-                    error = True
-                return render_template("login.html", error=error)
+            if request.method == "POST":
+                db = SessionLocal()
+                email = request.form.get("email")
+                password = request.form.get("password")
+                rememberMe = request.form.get("rememberMe") is not None
+                try:
+                    user = CRUDUser.authenticate(db, email=email, password=password)
+                    if user:
+                        login_user(user, remember=rememberMe)
+                        return redirect("/")
+                finally:
+                    db.close()
+                error = True
+            return render_template("login.html", error=error)
 
     def is_authorized(self):
         # Is the user authenticated?
@@ -43,10 +42,7 @@ class FlaskLogin(Auth):
         # Wraps all other views than the dash view that is
         # added before super method is called in the init method
         def wrap(*args, **kwargs):
-            if self.is_authorized():
-                return f(*args, **kwargs)
-            else:
-                return self.login_request()
+            return f(*args, **kwargs) if self.is_authorized() else self.login_request()
 
         return wrap
 
