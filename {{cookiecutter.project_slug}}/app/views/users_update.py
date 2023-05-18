@@ -185,7 +185,7 @@ def update_user(
     if not current_user.is_superuser:
         raise PreventUpdate()
     noti_class = "toast-header bg-primary text-white"
-    user_id = re.match(r"^/users/(\d+)", pathname).group(1)
+    user_id = re.match(r"^/users/(\d+)", pathname)[1]
     if triggered_by_id(
         dash.callback_context.triggered, "usersUpdateFormNotificationClose"
     ):

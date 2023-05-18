@@ -224,8 +224,7 @@ def create_user(_, __, full_name, email, password, password2, check_list):
 
     db = SessionLocal()
     try:
-        user = CRUDUser.get_by_email(db, email=email)
-        if user:
+        if user := CRUDUser.get_by_email(db, email=email):
             return (
                 "toast",
                 noti_class,

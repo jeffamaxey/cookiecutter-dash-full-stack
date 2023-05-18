@@ -26,6 +26,5 @@ def get_trigger_id(triggered, key="type"):
 
 
 def get_trigger_index(triggered, key="index"):
-    trigger_id = triggered[0]["prop_id"].split(".")[0]
-    if trigger_id:
+    if trigger_id := triggered[0]["prop_id"].split(".")[0]:
         return json.loads(trigger_id)[key]
